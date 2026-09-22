@@ -19,8 +19,9 @@ export const config  = {
     // 1. 静态URL: 直接指定API基础URL 末尾要加 /api/v1 !!!!!!!!!!!!!!! 除非你自己改过路由要不然别不加
     // 2. 自动获取: 从当前域名自动生成API基础URL
     API_CONFIG: {
-        // API URL获取方式: 'static'=使用静态URL, 'auto'=自动从当前域名获取
-        urlMode: 'static',
+        // XBoard 主题包默认与面板同域部署，自动使用当前域名的 /api/v1。
+        // 如前端与 XBoard 分域部署，请改为 'static' 并在 staticBaseUrl 填写 API 地址。
+        urlMode: 'auto',
       
         // 是否展示后端联通性检测
         showCheckBackend: false,
@@ -28,9 +29,7 @@ export const config  = {
         // 静态URL模式下的基础URL (urlMode = 'static'时使用)
         // 支持字符串形式(单个API地址)或数组形式(多个备选API地址)
         // 多个地址时，会按顺序检测可用性，并使用第一个可用的地址
-        staticBaseUrl: [
-            'https://apiapi.ytjcok.com/api/v1',
-        ],
+        staticBaseUrl: [],
       
         // 自动获取模式配置 (urlMode = 'auto'时使用)
         autoConfig: {
@@ -568,16 +567,16 @@ export const config  = {
 
     // 设置导航栏第三个位置显示的内容
     NAVIGATION_CONFIG: {
-        // 可选值: 'invite', 'docs', 'tickets', 'nodes', 'orders', 'traffic', 'wallet', 'profile'
+        // 可选值: 'invite', 'docs', 'tickets', 'nodes', 'orders', 'traffic', 'wallet', 'profile', 'accesspoints'
         // 'wallet' 只有 xiao-v2board 支持 非 xiao-v2board 面板请勿设置为 wallet
         // 默认值为 'invite'
         thirdNavItem: 'invite',
 
         // 可选：第四个导航项（插入在“更多”之前）。为空字符串或未设置则不插入
-        // 可选值同上: 'invite', 'docs', 'tickets', 'nodes', 'orders', 'traffic', 'wallet', 'profile'
-        // 默认值为 'docs'
+        // 可选值同上: 'invite', 'docs', 'tickets', 'nodes', 'orders', 'traffic', 'wallet', 'profile', 'accesspoints'
+        // 设置为 accesspoints 后，插件可用时显示“接入点”，文档会回到“更多”页面
         // 注意：如果第三个导航项设置为 'invite'，则第四个导航项不能设置为 'invite'
-        fourthNavItem: 'docs',
+        fourthNavItem: 'accesspoints',
     },
 
     // More页面自定义卡片配置
