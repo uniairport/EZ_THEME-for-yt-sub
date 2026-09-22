@@ -1,4 +1,4 @@
-﻿
+
 
 import { createRouter, createWebHashHistory } from 'vue-router';
 
@@ -62,7 +62,9 @@ const getActiveNavForRoute = (routeName) => {
 
     wallet: 'Deposit',
 
-    profile: 'Profile'
+    profile: 'Profile',
+
+    accesspoints: 'AccessPointSettings'
     
   };
 
@@ -75,7 +77,9 @@ const getActiveNavForRoute = (routeName) => {
     OrderList: 'Orders',
     TrafficLog: 'Traffic',
     Deposit: 'Wallet',
-    Profile: 'Profile'
+    Profile: 'Profile',
+
+    AccessPointSettings: 'AccessPoints'
   };
 
   // 如果当前路由匹配第三个导航项，则返回第三项对应的导航名
@@ -472,7 +476,7 @@ const routes = [
 
           requiresAuth: true,
 
-          activeNav: 'More'
+          get activeNav() { return getActiveNavForRoute('AccessPointSettings'); }
 
         }
 
