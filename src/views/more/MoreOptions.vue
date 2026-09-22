@@ -1,4 +1,4 @@
-﻿<template>
+<template>
 
   <div class="more-container">
 
@@ -34,7 +34,7 @@
 
       <div class="stats-grid">
 
-        <div v-if="showAccessPointCard" class="stats-card" @click="$router.push('/access-points')">
+        <div v-if="showAccessPointCard && !isHiddenByTopNav('accesspoints')" class="stats-card" @click="$router.push('/access-points')">
 
           <div class="stats-icon">
 
