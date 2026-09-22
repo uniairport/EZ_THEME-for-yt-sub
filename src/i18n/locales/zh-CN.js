@@ -1,4 +1,4 @@
-﻿import {SITE_CONFIG} from '../../utils/baseConfig';
+import {SITE_CONFIG} from '../../utils/baseConfig';
 
 export default {
     common: {
@@ -252,6 +252,7 @@ export default {
         traffic: '流量',
         wallet: '钱包',
         profile: '账号',
+        accessPoints: '接入点',
         more: '更多',
         commission: '返利',
         hotSale: '热销'
