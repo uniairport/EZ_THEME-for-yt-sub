@@ -21,7 +21,7 @@ export const config  = {
     API_CONFIG: {
         // XBoard 主题包默认与面板同域部署，自动使用当前域名的 /api/v1。
         // 如前端与 XBoard 分域部署，请改为 'static' 并在 staticBaseUrl 填写 API 地址。
-        urlMode: 'auto',
+        urlMode: 'static',
       
         // 是否展示后端联通性检测
         showCheckBackend: false,
