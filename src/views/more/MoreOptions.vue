@@ -33,6 +33,30 @@
       <!-- 功能导航卡片组 -->
 
       <div class="stats-grid">
+
+        <div v-if="showAccessPointCard" class="stats-card" @click="$router.push('/access-points')">
+
+          <div class="stats-icon">
+
+            <IconRoute :size="32" />
+
+          </div>
+
+          <div class="stats-info">
+
+            <div class="stats-value">接入点设置</div>
+
+            <div class="stats-label">为每个节点选择连接入口</div>
+
+          </div>
+
+          <div class="chevron-icon">
+
+            <IconChevronRight :size="20" />
+
+          </div>
+
+        </div>
         
         <div v-if="shouldShowInviteCard" class="stats-card" @click="$router.push('/invite')">
 
@@ -342,7 +366,9 @@ import {
 
   IconWallet,
 
-  IconUserPlus
+  IconUserPlus,
+
+  IconRoute
 
 } from '@tabler/icons-vue';
 
@@ -353,6 +379,8 @@ import { useRouter } from 'vue-router';
 import { ref, onMounted, onUnmounted, computed } from 'vue';
 
 import DomainAuthAlert from '@/components/common/DomainAuthAlert.vue';
+
+import { fetchAccessPointSettings } from '@/api/accessPoints';
 
 
 
@@ -375,6 +403,8 @@ const isSmallScreen = ref(false);
 
 
 const showTrafficLog = ref(false);
+
+const showAccessPointCard = ref(false);
 
 const isXiaoPanel = isXiaoV2board();
 
@@ -494,6 +524,14 @@ onMounted(async () => {
   
 
   showTrafficLog.value = TRAFFICLOG_CONFIG.enableTrafficLog;
+
+  try {
+    const response = await fetchAccessPointSettings();
+    showAccessPointCard.value = response?.data?.enabled === true;
+  } catch (error) {
+    // 插件未安装、被禁用或接口不可用时不显示入口。
+    showAccessPointCard.value = false;
+  }
 
   
 
