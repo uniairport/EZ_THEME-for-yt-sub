@@ -60,6 +60,8 @@ import { useRoute, useRouter } from 'vue-router';
 
 import { INVITE_CONFIG, SHOP_CONFIG, NAVIGATION_CONFIG } from '@/utils/baseConfig';
 
+import { fetchAccessPointSettings } from '@/api/accessPoints';
+
 import IconDashboard from '@/components/icons/IconDashboard.vue';
 
 import IconShop from '@/components/icons/IconShop.vue';
@@ -80,7 +82,9 @@ import {
 
   IconChartBar,
 
-  IconHeadset   
+  IconHeadset,
+
+  IconRoute
 
 } from '@tabler/icons-vue';  
 
@@ -111,6 +115,8 @@ export default {
     const isComponentMounted = ref(false);
 
     const languageKey = ref(Date.now());
+
+    const accessPointAvailable = ref(false);
 
     
 
@@ -169,6 +175,9 @@ export default {
 
 
 
+    // 获取第三、第四个导航项配置。放在 getNavItems 外层，便于挂载时判断。
+    const thirdNavItem = NAVIGATION_CONFIG?.thirdNavItem || 'invite';
+    const fourthNavItem = NAVIGATION_CONFIG?.fourthNavItem || '';
 
     // 替换原有的 navItems 定义
     const getNavItems = () => {
@@ -181,10 +190,6 @@ export default {
             { title: 'Shop', path: '/shop', name: 'Shop', icon: 'IconShop', i18nKey: 'shop' },
 
         ];
-
-        // 获取第三、第四个导航项配置
-        const thirdNavItem = NAVIGATION_CONFIG?.thirdNavItem || 'invite';
-        const fourthNavItem = NAVIGATION_CONFIG?.fourthNavItem || '';
 
         // 导航项配置映射（可复用）
         const navMap = {
@@ -214,19 +219,23 @@ export default {
 
           wallet: { title: 'Wallet', path: '/wallet/deposit', name: 'Deposit', icon: 'IconWallet', i18nKey: 'wallet' },
 
-          profile: { title: 'Profile', path: '/profile', name: 'Profile', icon: 'IconUser', i18nKey: 'profile' }
+          profile: { title: 'Profile', path: '/profile', name: 'Profile', icon: 'IconUser', i18nKey: 'profile' },
+
+          accesspoints: { title: 'AccessPoints', path: '/access-points', name: 'AccessPoints', icon: 'IconRoute', i18nKey: 'accessPoints' }
 
         };
 
         // 添加配置的第三个导航项（有效值才插入）
         const third = navMap[thirdNavItem];
-        if (third) {
+        const canShowThird = thirdNavItem !== 'accesspoints' || accessPointAvailable.value;
+        if (third && canShowThird) {
           baseNavItems.push(third);
         }
 
         // 可选：添加第四个导航项（非空、有效且不与第三重复时插入）
         const fourth = fourthNavItem && navMap[fourthNavItem] ? navMap[fourthNavItem] : null;
-        if (fourth && fourth.i18nKey !== (third?.i18nKey)) {
+        const canShowFourth = fourthNavItem !== 'accesspoints' || accessPointAvailable.value;
+        if (fourth && canShowFourth && fourth.i18nKey !== (third?.i18nKey)) {
           baseNavItems.push(fourth);
         }
 
@@ -237,7 +246,7 @@ export default {
         
     };
 
-    const navItems = getNavItems();
+    const navItems = ref(getNavItems());
 
     
 
@@ -264,6 +273,8 @@ export default {
         case 'IconWallet': return IconWallet;
 
         case 'IconUser': return IconUser;
+
+        case 'IconRoute': return IconRoute;
 
         default: return null;
 
@@ -392,7 +403,7 @@ export default {
 
         const activeNavName = route.meta.activeNav;
 
-        const activeIndex = navItems.findIndex(item => item.name === activeNavName);
+        const activeIndex = navItems.value.findIndex(item => item.name === activeNavName);
 
         
 
@@ -406,7 +417,7 @@ export default {
 
       
 
-      const index = navItems.findIndex(item => item.name === routeName);
+      const index = navItems.value.findIndex(item => item.name === routeName);
 
       return index !== -1 ? index : 0; 
     };
@@ -517,7 +528,7 @@ export default {
 
           const activeNavName = route.meta.activeNav;
 
-          const indexByActiveNav = navItems.findIndex(item => item.name === activeNavName);
+          const indexByActiveNav = navItems.value.findIndex(item => item.name === activeNavName);
 
           if (indexByActiveNav !== -1) {
 
@@ -628,6 +639,25 @@ export default {
       // 初始化屏幕尺寸检测
       checkScreenSize();
 
+      // 接入点入口仅在插件可用时出现；插件禁用或接口异常时自动隐藏。
+      if (thirdNavItem === 'accesspoints' || fourthNavItem === 'accesspoints') {
+        fetchAccessPointSettings()
+          .then((response) => {
+            accessPointAvailable.value = response?.data?.enabled === true;
+          })
+          .catch(() => {
+            accessPointAvailable.value = false;
+          })
+          .finally(() => {
+            navItems.value = getNavItems();
+            nextTick(() => {
+              const index = findIndexByRouteName(route.name);
+              currentIndex.value = index;
+              updateSliderPosition(index, false);
+            });
+          });
+      }
+
       window.addEventListener('resize', checkScreenSize);
 
 
@@ -662,7 +692,7 @@ export default {
 
             const activeNavName = route.meta.activeNav;
 
-            const indexByActiveNav = navItems.findIndex(item => item.name === activeNavName);
+            const indexByActiveNav = navItems.value.findIndex(item => item.name === activeNavName);
 
             if (indexByActiveNav !== -1) {
 
