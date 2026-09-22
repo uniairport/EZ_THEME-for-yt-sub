@@ -29,7 +29,7 @@ export const config  = {
         // 静态URL模式下的基础URL (urlMode = 'static'时使用)
         // 支持字符串形式(单个API地址)或数组形式(多个备选API地址)
         // 多个地址时，会按顺序检测可用性，并使用第一个可用的地址
-        staticBaseUrl: [],
+        staticBaseUrl: [https://apiapi.ytjcok.com],
       
         // 自动获取模式配置 (urlMode = 'auto'时使用)
         autoConfig: {
