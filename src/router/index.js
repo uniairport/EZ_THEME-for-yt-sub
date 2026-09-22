@@ -460,6 +460,26 @@ const routes = [
 
       {
 
+        path: 'access-points',
+
+        name: 'AccessPointSettings',
+
+        component: () => import('@/views/accessPoints/AccessPointSettings.vue'),
+
+        meta: {
+
+          title: '接入点设置',
+
+          requiresAuth: true,
+
+          activeNav: 'More'
+
+        }
+
+      },
+
+      {
+
         path: 'orders',
 
         name: 'OrderList',
@@ -685,6 +705,12 @@ router.beforeEach(async (to, from, next) => {
   
 
   const getTitle = () => {
+
+    if (to.meta.title) {
+
+      return `${to.meta.title} - ${SITE_CONFIG.siteName}`;
+
+    }
 
     if (to.meta.titleKey) {
 
