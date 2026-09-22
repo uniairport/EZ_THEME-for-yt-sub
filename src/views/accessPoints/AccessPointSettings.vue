@@ -42,9 +42,9 @@
             <IconRefresh :size="18" />
             重新加载
           </button>
-          <button type="button" class="text-button" @click="$router.push('/more')">
+          <button type="button" class="text-button" @click="$router.push('/dashboard')">
             <IconArrowLeft :size="18" />
-            返回更多功能
+            返回仪表盘
           </button>
         </div>
       </section>
