@@ -129,7 +129,7 @@ export const config  = {
             title: "用户须知 (可自定义开启)",
 
             // 弹窗内容 (支持HTML)
-            content: "<p><strong>欢迎使用我们的服务！</strong></p><p>请注意以下事项：</p><ul><li>请妥善保管您的账号信息</li><li>如有问题请联系客服</li></ul>",
+            content: "<p>尊敬的云图机场用户：</p><p>您好！为了提供更稳定、安全的访问体验，云图机场现已正式启用最新官方访问域名。请各位用户及时更新并收藏以下地址：</p><p><strong>最新官方网址</strong>：<a href='https://super.yuntujc.cc'>https://ytjcok.com</a></p>",
 
             // 冷却时间（小时），在此时间内不会再次显示弹窗
             cooldownHours: 1,
@@ -452,7 +452,7 @@ export const config  = {
             // 链接模式：'auto'=自动使用当前站点域名，'custom'=使用自定义域名
             linkMode: 'custom',
             // 自定义域名，当linkMode为'custom'时使用
-            customDomain: 'https://super.ytjcok.org'
+            customDomain: 'https://super.yuntujc.cc'
         }
     },
 
